@@ -1,0 +1,40 @@
+# Audition API
+
+###
+# group: api/v1 / posts
+# @name Get all available posts
+GET {{baseUrl}}/api/v1/posts
+
+<> ./audition-api-responses/GET_posts_successful_200.json
+
+###
+# group: api/v1 / posts
+# @name Get all available posts filtered by userId and title
+GET {{baseUrl}}/api/v1/posts?userId=5&title=non%20est%20facere
+
+<> ./audition-api-responses/GET_posts_by_userId_title_200.json
+
+###
+# group: api/v1 / posts / {post Id}
+# @name Get Audition Post information for given postId
+GET {{baseUrl}}/api/v1/posts/41
+
+<> ./audition-api-responses/GET_post_by_postId_41_successful_200.json
+// {{baseUrl}}/api/v1/posts/abc
+<> ./audition-api-responses/GET_post_by_postId_abc_bad_request_400.json
+// {{baseUrl}}/api/v1/posts/33333
+<> ./audition-api-responses/GET_post_by_postId_33333_bad_request_404.json
+
+###
+# group: api/v1 / posts / {post Id}
+# @name Get Comments for a given Post id
+GET {{baseUrl}}/api/v1/posts/44/comments
+
+<> ./audition-api-responses/GET_post_comments_by_postId_44_successful_200.json
+
+###
+# group: api/v1
+# @name Get Comments for a given Post id along with Post information
+GET {{baseUrl}}/api/v1/comments?postId=44
+
+<> ./audition-api-responses/GET_post_comments_with_post_by_postId_200.json

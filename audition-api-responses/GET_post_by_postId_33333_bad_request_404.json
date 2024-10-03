@@ -1,0 +1,7 @@
+{
+  "type": "about:blank",
+  "title": "Resource Not Found",
+  "status": 404,
+  "detail": "Cannot find a Post with id 33333 - 404 Not Found: \"{}\"",
+  "instance": "/api/v1/posts/33333"
+}

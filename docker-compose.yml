@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  audition-api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      args:
+        - version=0.0.1-SNAPSHOT
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+      # debug port
+      - "8787:8787"
+    environment:
+      - APP_ENV=local
+    entrypoint:
+      - java
+      - -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8787
+      - -Dspring.profiles.active=local
+      - -Xms128m
+      - -Xmx512m
+      - -jar
+      - audition-api.jar
+
+
