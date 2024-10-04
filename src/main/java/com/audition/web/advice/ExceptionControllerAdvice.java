@@ -1,10 +1,12 @@
 package com.audition.web.advice;
 
+import static com.audition.common.Constants.MM_APP_API_EXCEPTION_HANDLER_ADVICE_METRIC_NAME;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
 
 import com.audition.common.exception.SystemException;
 import com.audition.common.logging.AuditionLogger;
+import com.audition.service.AuditionMeterService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -45,6 +47,8 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
     public static final String SYSTEM_EXCEPTION = "System Exception occurred.";
 
     private final AuditionLogger logger;
+    private final AuditionMeterService auditionMeterService;
+
 
     /**
      * Handles exceptions of type {@link HttpClientErrorException} thrown by HTTP clients. Logs the exception and
@@ -55,6 +59,7 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(HttpClientErrorException.class)
     ProblemDetail handleHttpClientException(final HttpClientErrorException clientErrorException) {
+        auditionMeterService.record(MM_APP_API_EXCEPTION_HANDLER_ADVICE_METRIC_NAME, null, false, clientErrorException);
         logger.logErrorWithException(LOG, HTTP_CLIENT_EXCEPTION + clientErrorException.getMessage(),
             clientErrorException);
         return createProblemDetail(clientErrorException, clientErrorException.getStatusCode());
@@ -70,6 +75,8 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     ProblemDetail handleMainException(final Exception exception) {
+
+        auditionMeterService.record(MM_APP_API_EXCEPTION_HANDLER_ADVICE_METRIC_NAME, null, false, exception);
         logger.logErrorWithException(LOG, GENERAL_EXCEPTION + exception.getMessage(), exception);
 
         final HttpStatusCode status = getHttpStatusCodeFromException(exception);
@@ -86,6 +93,8 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(SystemException.class)
     ProblemDetail handleSystemException(final SystemException systemException) {
+
+        auditionMeterService.record(MM_APP_API_EXCEPTION_HANDLER_ADVICE_METRIC_NAME, null, false, systemException);
         logger.logErrorWithException(LOG, SYSTEM_EXCEPTION + systemException.getMessage(), systemException);
 
         final HttpStatusCode status = getHttpStatusCodeFromSystemException(systemException);

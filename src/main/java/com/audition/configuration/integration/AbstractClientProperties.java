@@ -6,6 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * Abstract class representing properties required for a client. It enforces the presence of a host and provides utility
+ * methods to build URI components from given paths.
+ */
 @Setter
 public abstract class AbstractClientProperties implements Serializable {
 

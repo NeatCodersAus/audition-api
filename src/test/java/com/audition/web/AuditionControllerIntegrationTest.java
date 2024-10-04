@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.audition.common.logging.AuditionLogger;
 import com.audition.configuration.AuditionApiProperties;
 import com.audition.configuration.HttpRequestLoggingInterceptor;
+import com.audition.service.AuditionMeterService;
 import com.audition.service.AuditionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
@@ -49,6 +50,9 @@ class AuditionControllerIntegrationTest {
 
     @MockBean
     private AuditionApiProperties auditionApiProperties;
+
+    @MockBean
+    private AuditionMeterService auditionMeterService;
 
     @Autowired
     private ObjectMapper objectMapper;

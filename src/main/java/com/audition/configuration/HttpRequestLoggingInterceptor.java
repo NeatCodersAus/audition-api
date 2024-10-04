@@ -15,6 +15,10 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 
+/**
+ * HttpRequestLoggingInterceptor is a Spring component that implements the ClientHttpRequestInterceptor interface. It is
+ * responsible for logging HTTP requests and responses.
+ */
 @Component
 @RequiredArgsConstructor
 public class HttpRequestLoggingInterceptor implements ClientHttpRequestInterceptor {

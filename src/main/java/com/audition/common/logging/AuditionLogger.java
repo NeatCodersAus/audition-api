@@ -5,48 +5,98 @@ import org.slf4j.Logger;
 import org.springframework.http.ProblemDetail;
 import org.springframework.stereotype.Component;
 
+/**
+ * AuditionLogger is a utility class that provides methods to log messages at various levels (info, debug, warn, error)
+ * utilizing a provided logger instance. It includes methods to log simple messages, messages with objects, and error
+ * messages with associated exceptions.
+ */
 @Component
 public class AuditionLogger {
 
     private static final String ERROR_OCCURRED = "An error occurred";
     private static final String COMMA_SPACE_SEPARATOR = ", ";
 
+    /**
+     * Logs an information level message using the provided logger.
+     *
+     * @param logger  the logger instance to use for logging the message
+     * @param message the message to be logged
+     */
     public void info(final Logger logger, final String message) {
         if (logger.isInfoEnabled()) {
             logger.info(message);
         }
     }
 
+    /**
+     * Logs an information level message using the provided logger.
+     *
+     * @param logger  the logger instance to use for logging the message
+     * @param message the message to be logged
+     * @param object  an object to be included in the log message
+     */
     public void info(final Logger logger, final String message, final Object object) {
         if (logger.isInfoEnabled()) {
             logger.info(message, object);
         }
     }
 
+    /**
+     * Logs a debug level message using the provided logger.
+     *
+     * @param logger  the logger instance to use for logging the message
+     * @param message the message to be logged
+     */
     public void debug(final Logger logger, final String message) {
         if (logger.isDebugEnabled()) {
             logger.debug(message);
         }
     }
 
+    /**
+     * Logs a warning level message using the provided logger.
+     *
+     * @param logger  the logger instance to use for logging the message
+     * @param message the message to be logged
+     */
     public void warn(final Logger logger, final String message) {
         if (logger.isWarnEnabled()) {
             logger.warn(message);
         }
     }
 
+    /**
+     * Logs an error level message using the provided logger.
+     *
+     * @param logger  the logger instance to use for logging the message
+     * @param message the message to be logged
+     */
     public void error(final Logger logger, final String message) {
         if (logger.isErrorEnabled()) {
             logger.error(message);
         }
     }
 
+    /**
+     * Logs an error message along with the corresponding exception using the provided logger.
+     *
+     * @param logger  the logger instance to be used for logging
+     * @param message the error message to be logged
+     * @param e       the exception to be logged along with the error message
+     */
     public void logErrorWithException(final Logger logger, final String message, final Exception e) {
         if (logger.isErrorEnabled()) {
             logger.error(message, e);
         }
     }
 
+    /**
+     * Logs a standard problem detail message along with the exception at the error level using the provided logger.
+     *
+     * @param logger        the logger instance to be used for logging
+     * @param problemDetail the problem detail containing the information to be logged
+     * @param e             the exception to be logged along with the problem detail message
+     */
     public void logStandardProblemDetail(final Logger logger, final ProblemDetail problemDetail, final Exception e) {
         if (logger.isErrorEnabled()) {
             final String message = createStandardProblemDetailMessage(problemDetail);
@@ -54,6 +104,13 @@ public class AuditionLogger {
         }
     }
 
+    /**
+     * Logs an error level message with an HTTP status code error using the provided logger.
+     *
+     * @param logger    the logger instance to use for logging the message
+     * @param message   the error message to be logged
+     * @param errorCode the HTTP status code to be included in the log message
+     */
     public void logHttpStatusCodeError(final Logger logger, final String message, final Integer errorCode) {
         if (logger.isErrorEnabled()) {
             logger.error(createBasicErrorResponseMessage(errorCode, message) + "\n");

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.audition.common.exception.SystemException;
@@ -15,6 +16,7 @@ import com.audition.configuration.integration.AuditionIntegrationClientPropertie
 import com.audition.model.AuditionPost;
 import com.audition.model.AuditionPostComment;
 import com.audition.model.AuditionPostComments;
+import com.audition.service.AuditionMeterService;
 import java.net.URI;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -45,10 +47,13 @@ class AuditionIntegrationClientTest {
     private AuditionLogger auditionLogger;
 
     @Mock
+    private AuditionMeterService auditionMeterService;
+
+    @Mock
     private AuditionIntegrationClientProperties properties;
 
     private AuditionIntegrationClient createClient() {
-        return new AuditionIntegrationClient(restTemplate, auditionLogger, properties);
+        return new AuditionIntegrationClient(restTemplate, auditionLogger, properties, auditionMeterService);
     }
 
     @Test
@@ -166,5 +171,6 @@ class AuditionIntegrationClientTest {
 
         //Act and assert
         assertThrows(SystemException.class, () -> client.fetchPostComments(POST_ID));
+        verify(auditionMeterService).record(any(), any(), eq(false), any());
     }
 }

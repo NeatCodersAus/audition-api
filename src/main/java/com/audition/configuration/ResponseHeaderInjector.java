@@ -21,6 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
+/**
+ * ResponseHeaderInjector is a servlet filter that injects custom trace and span ID headers into HTTP responses. It uses
+ * an AuditionLogger to log debugging information.
+ */
 @WebFilter("/*")
 @Component
 @RequiredArgsConstructor

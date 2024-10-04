@@ -2,6 +2,7 @@ package com.audition.integration;
 
 import static com.audition.common.Constants.MICROMETER_SPAN_ID;
 import static com.audition.common.Constants.MICROMETER_TRACE_ID;
+import static com.audition.common.Constants.MM_APP_API_INTEGRATION_METRIC_NAME;
 import static com.audition.common.Constants.X_SPAN_ID;
 import static com.audition.common.Constants.X_TRACE_ID;
 
@@ -11,6 +12,7 @@ import com.audition.configuration.integration.AuditionIntegrationClientPropertie
 import com.audition.model.AuditionPost;
 import com.audition.model.AuditionPostComment;
 import com.audition.model.AuditionPostComments;
+import com.audition.service.AuditionMeterService;
 import java.net.URI;
 import java.util.List;
 import java.util.function.Supplier;
@@ -34,20 +36,20 @@ import org.springframework.web.client.RestTemplate;
  */
 @Component
 @RequiredArgsConstructor
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class AuditionIntegrationClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuditionIntegrationClient.class);
-
-    private final RestTemplate restTemplate;
-    private final AuditionLogger auditionLogger;
-    private final AuditionIntegrationClientProperties properties;
-
     private static final ParameterizedTypeReference<List<AuditionPost>> LIST_OF_AUDITION_POSTS_TYPE =
         new ParameterizedTypeReference<>() {
         };
     private static final ParameterizedTypeReference<List<AuditionPostComment>> LIST_OF_AUDITION_POST_COMMENTS_TYPE =
         new ParameterizedTypeReference<>() {
         };
+    private final RestTemplate restTemplate;
+    private final AuditionLogger auditionLogger;
+    private final AuditionIntegrationClientProperties properties;
+    private final AuditionMeterService auditionMeterService;
 
     public List<AuditionPost> fetchAllPosts() {
         auditionLogger.debug(LOG, "Fetching all posts from the target.");
@@ -123,6 +125,7 @@ public class AuditionIntegrationClient {
             return supplier.get();
         } catch (HttpClientErrorException e) {
             final HttpStatusCode statusCode = e.getStatusCode();
+            auditionMeterService.record(MM_APP_API_INTEGRATION_METRIC_NAME, null, false, e);
             throw new SystemException(
                 errorMessage,
                 statusCode == HttpStatus.NOT_FOUND ? "Resource Not Found" : e.getMessage(),

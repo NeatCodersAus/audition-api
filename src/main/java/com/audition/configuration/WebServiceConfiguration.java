@@ -16,6 +16,16 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Configuration class for web service-related beans and settings.
+ *
+ * <p>This configuration class sets up several key components required for the application:
+ * - `ObjectMapper` bean for JSON processing.
+ * - `RestTemplate` bean for HTTP client operations, including customized request and response handling.
+ * - HTTP request logging through `HttpRequestLoggingInterceptor`.
+ *
+ * <p>The class implements `WebMvcConfigurer` to provide additional configuration for Spring MVC.
+ */
 @Configuration
 @Import({JacksonAutoConfiguration.class})
 @RequiredArgsConstructor

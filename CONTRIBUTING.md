@@ -195,11 +195,14 @@ The coverage report will be found in `reports/jacoco/test/html/index.html`
 ----
 
 # Run app on your machine locally
- 
+
 We have atleast two ways of running the app locally.
-  * Using java -jar ..
-  * using docker compose
+
+* Using java -jar ..
+* using docker compose
+
 ---
+
 ### Please follow commands below to run app on your local machine
 
 ```bash
@@ -214,7 +217,7 @@ total 60872
 ### Start app using command below
 
 ```
-$ java -jar build/libs/audition-api-0.0.1-SNAPSHOT.jar
+$ java -jar -Dspring.profiles.active=local build/libs/audition-api-0.0.1-SNAPSHOT.jar
 ```
 
 Application should start without any errors and you should see output similar to below in console
@@ -235,6 +238,7 @@ Application should start without any errors and you should see output similar to
   ![swaggerui.png](screenshots/swaggerui.png)
 
 ---
+
 ### Run app using docker compose (if docker is available on your machine)
 
 * Please follow commands below to run app on your local machine using docker
@@ -415,4 +419,28 @@ docker logs --tail 100 b599be413121
 <date> 08:08:51.644  INFO [audition-api,,] 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
 <date> 08:08:51.683  INFO [audition-api,,] 1 --- [           main] com.audition.AuditionApplication         : Started AuditionApplication in 9.882 seconds (process running for 10.609)
 ```
+
 ---
+
+## App metrics
+
+Application captures some metrics as well.
+Make sure the profile enables prometheus and metrics
+management.endpoints.web.exposure.include= info, health, metrics, prometheus
+
+Access metrics data from
+http://localhost:8080/actuator/prometheus
+
+## TYPE http.server.requests summary
+
+![httpServerRequestsCountMetrics](http.server.requests.count_metrics.png)
+
+## TYPE audition.api.exception.handler_total counter
+
+![audition.api.exception.handler_total_metric](audition.api.exception.handler_total_metric.png)
+
+## TYPE audition.api.integration.client_total_metric
+
+![audition.api.integration.client_total_metric](audition.api.integration.client_total_metric.png)
+
+--
